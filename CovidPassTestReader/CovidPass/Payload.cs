@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// This contains low level data about CovidPass, mainly doing CBOR work

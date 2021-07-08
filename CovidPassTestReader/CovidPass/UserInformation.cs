@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Informations about user

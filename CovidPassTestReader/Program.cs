@@ -9,30 +9,14 @@ using BarcodeLib;
 using ZXing;
 using ZXing.Common;
 
-namespace CovidPassTestReader
+namespace CovidPassReader
 {
     class Program
     {
         static void Main(string[] args)
         {
-            BarcodeReader reader = new BarcodeReader(null, null, ls => new GlobalHistogramBinarizer(ls))
-            {
-                AutoRotate = true
-            };
-            reader.Options.TryHarder = true;
-            reader.Options.PureBarcode = false;
-            reader.AutoRotate = true;
-            reader.TryInverted = true;
-            reader.Options.PossibleFormats = new List<BarcodeFormat>
-            {
-                BarcodeFormat.QR_CODE
-            };
-            var gFilter = new GaussianBlur(2);
-            var processedImage = gFilter.ProcessImage((Image)new Bitmap("TestData\\covidTest.jpg")); //REPLACE IT WITH YOUR TEST
-
-            var result =  reader.Decode((Bitmap)processedImage);
             Console.WriteLine();
-            var passData = new CovidPass.PassData(result.Text); //process covid data
+            var passData = new CovidPass.PassData(QRCodeReadHelper.ReadQRCode("")); //process covid data
 
             Console.WriteLine($"Read user: {passData.UserInformation.Name}, {passData.UserInformation.Surname}");
             Console.WriteLine($"Born: {passData.UserInformation.DateOfBirth.ToLongDateString()}");

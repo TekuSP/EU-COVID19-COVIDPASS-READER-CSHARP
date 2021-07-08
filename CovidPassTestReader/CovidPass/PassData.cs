@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// COVID-19 Certification data, containing vacinnes and tests done

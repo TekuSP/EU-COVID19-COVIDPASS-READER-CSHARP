@@ -6,7 +6,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace CovidPassTestReader.CovidPass.Json
+namespace CovidPassReader.CovidPass.Json
 {
     internal static class Converter
     {
@@ -51,7 +51,7 @@ namespace CovidPassTestReader.CovidPass.Json
 
         [JsonProperty("valueSetValues")]
         public Dictionary<string, ValueSetValue> ValueSetValues { get; set; }
-        public static EUData FromJson(string json) => JsonConvert.DeserializeObject<EUData>(json, CovidPassTestReader.CovidPass.Json.Converter.Settings);
+        public static EUData FromJson(string json) => JsonConvert.DeserializeObject<EUData>(json, CovidPassReader.CovidPass.Json.Converter.Settings);
         public override string ToString()
         {
             return ValueSetId;
@@ -59,6 +59,6 @@ namespace CovidPassTestReader.CovidPass.Json
     }
     public static class Serialize
     {
-        public static string ToJson(this EUData self) => JsonConvert.SerializeObject(self, CovidPassTestReader.CovidPass.Json.Converter.Settings);
+        public static string ToJson(this EUData self) => JsonConvert.SerializeObject(self, CovidPassReader.CovidPass.Json.Converter.Settings);
     }
 }

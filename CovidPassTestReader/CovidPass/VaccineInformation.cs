@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Information about used vaccine on user

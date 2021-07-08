@@ -1,7 +1,7 @@
-﻿using CovidPassTestReader.CovidPass.Json;
+﻿using CovidPassReader.CovidPass.Json;
 
 using System.Net;
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Database of all known things from EU

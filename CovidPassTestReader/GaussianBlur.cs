@@ -5,7 +5,7 @@ using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 
-namespace CovidPassTestReader
+namespace CovidPassReader
 {
     [Serializable]
     public enum BlurType

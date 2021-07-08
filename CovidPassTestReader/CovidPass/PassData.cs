@@ -19,6 +19,30 @@ namespace CovidPassTestReader.CovidPass
     {
         //Based on schema: https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/DCC.combined-schema.json
         /// <summary>
+        /// Is it vaccination proof, or test proof, or recovery proof?
+        /// </summary>
+        public string PassportType { get; set; }
+        /// <summary>
+        /// Passport description, right now based on EU recommendation text
+        /// </summary>
+        public string PassportDescription { get; set; } =
+@"This certificate is not a travel document. The scientific evidence
+on COVID-19 vaccination, testing and recovery continues to
+evolve, also in view of new variants of concern of the virus.
+Before traveling, please check the applicable public health
+measures and related restrictions applied at the point of
+destination.
+Relevant information can be found here:
+https://reopen.europa.eu/en
+
+This certificate was verified/generated using third party application.
+Relevant information to software can be found here:
+https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
+        /// <summary>
+        /// Is certificate valid by date?
+        /// </summary>
+        public bool IsValid => DateTime.Now < Payload.ValidTo && DateTime.Now > Payload.ValidFrom;
+        /// <summary>
         /// Data Payload we are basing on (Usually from QR code)
         /// </summary>
         public Payload Payload { get; set; }

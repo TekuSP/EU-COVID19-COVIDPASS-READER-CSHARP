@@ -84,12 +84,17 @@ namespace CovidPassTestReader.CovidPass
 
             Dictionary<object, object> vaccinationInformation = null;
             Dictionary<object, object> testInformation = null;
+            Dictionary<object, object> recoveryInformation = null;
 
-            if (dict.ContainsKey("v")) //Are there any vaccines?
+
+            if (dict.ContainsKey("v")) //Are there any vaccines? There can be only one.
                 vaccinationInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["v"]);
 
-            if (dict.ContainsKey("t")) //Are there any tests?
+            if (dict.ContainsKey("t")) //Are there any tests? There can be only one.
                 testInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["t"]);
+
+            if (dict.ContainsKey("r")) //Are there any recoveries? There can be only one.
+                recoveryInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["r"]);
 
             var nameInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["nam"]); //If we don't have name, then its rightful to crash
             var dateOfBirthInformation = DateTime.Parse(dict["dob"].ToString()); //Same here
@@ -97,10 +102,12 @@ namespace CovidPassTestReader.CovidPass
             UserInformation = new UserInformation() { DateOfBirth = dateOfBirthInformation, Name = nameInformation["gn"].ToString(), StandardisedName = nameInformation["gnt"].ToString(), Surname = nameInformation["fn"].ToString(), StandardisedSurname = nameInformation["fnt"].ToString() }; //Init user information
             if (vaccinationInformation != null)
             {
-                VaccineInformation = new VaccineInformation() { AgentTargeted = vaccinationInformation["tg"].ToString(), CertificationIssuer = vaccinationInformation["is"].ToString(), DateOfVaccination = DateTime.Parse(vaccinationInformation["dt"].ToString()), DoseNumber = vaccinationInformation["dn"].ToString(), TotalDoses = vaccinationInformation["sd"].ToString(), UVCI = vaccinationInformation["ci"].ToString(), Vaccine = vaccinationInformation["vp"].ToString() }; //Init vaccine information
+                VaccineInformation = new VaccineInformation() { CertificationIssuer = vaccinationInformation["is"].ToString(), DateOfVaccination = DateTime.Parse(vaccinationInformation["dt"].ToString()), DoseNumber = vaccinationInformation["dn"].ToString(), TotalDoses = vaccinationInformation["sd"].ToString(), UVCI = vaccinationInformation["ci"].ToString() }; //Init vaccine information
                 VaccineInformation.CountryCode = DataValueSets.CountryCodes.ValueSetValues[vaccinationInformation["co"].ToString()]; //Init Country
-                VaccineInformation.Manufacturer = DataValueSets.Manufacturers.ValueSetValues[vaccinationInformation["ma"].ToString()]; //Init Manufacturer
-                VaccineInformation.VaccineName = DataValueSets.MedicalProducts.ValueSetValues[vaccinationInformation["mp"].ToString()]; //Init Vaccine Name
+                VaccineInformation.Manufacturer = DataValueSets.ManufacturersVaccines.ValueSetValues[vaccinationInformation["ma"].ToString()]; //Init Manufacturer
+                VaccineInformation.VaccineName = DataValueSets.VaccineMedicalProducts.ValueSetValues[vaccinationInformation["mp"].ToString()]; //Init Vaccine Name
+                VaccineInformation.VaccineProphylaxis = DataValueSets.VaccineProphylaxis.ValueSetValues[vaccinationInformation["vp"].ToString()];
+                VaccineInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[vaccinationInformation["tg"].ToString()];
             }
         }
     }

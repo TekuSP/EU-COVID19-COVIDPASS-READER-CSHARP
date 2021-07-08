@@ -41,10 +41,24 @@ namespace CovidPassTestReader.CovidPass.Json
             return Display;
         }
     }
+    public partial class EUData
+    {
+        [JsonProperty("valueSetId")]
+        public string ValueSetId { get; set; }
+
+        [JsonProperty("valueSetDate")]
+        public DateTimeOffset ValueSetDate { get; set; }
+
+        [JsonProperty("valueSetValues")]
+        public Dictionary<string, ValueSetValue> ValueSetValues { get; set; }
+        public static EUData FromJson(string json) => JsonConvert.DeserializeObject<EUData>(json, CovidPassTestReader.CovidPass.Json.Converter.Settings);
+        public override string ToString()
+        {
+            return ValueSetId;
+        }
+    }
     public static class Serialize
     {
-        public static string ToJson(this MedicalProducts self) => JsonConvert.SerializeObject(self, CovidPassTestReader.CovidPass.Json.Converter.Settings);
-        public static string ToJson(this CountryCodes self) => JsonConvert.SerializeObject(self, CovidPassTestReader.CovidPass.Json.Converter.Settings);
-        public static string ToJson(this Manufacturers self) => JsonConvert.SerializeObject(self, CovidPassTestReader.CovidPass.Json.Converter.Settings);
+        public static string ToJson(this EUData self) => JsonConvert.SerializeObject(self, CovidPassTestReader.CovidPass.Json.Converter.Settings);
     }
 }

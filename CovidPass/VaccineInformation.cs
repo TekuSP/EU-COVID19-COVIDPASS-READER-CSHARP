@@ -22,11 +22,11 @@ namespace CovidPassTestReader.CovidPass
         /// <summary>
         /// disease or agent targeted
         /// </summary>
-        public string AgentTargeted { get; set; }
+        public Json.ValueSetValue AgentTargeted { get; set; }
         /// <summary>
         /// vaccine or prophylaxis
         /// </summary>
-        public string Vaccine { get; set; }
+        public Json.ValueSetValue VaccineProphylaxis { get; set; }
         /// <summary>
         /// ISO8601 complete date: Date of Vaccination
         /// </summary>

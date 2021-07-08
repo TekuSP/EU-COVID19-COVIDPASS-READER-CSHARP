@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>../README.md</PackageLicenseFile>
+    <RepositoryType>Git</RepositoryType>
+    <RepositoryUrl>https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP</RepositoryUrl>
+    <Authors>Richard "TekuSP" Torhan</Authors>
+    <Product>EU-COVID19-COVIDPASS-READER-CSHARP</Product>
+    <Description>EU Covid19 CovidPass reader, proof of concept done in .NET C#.</Description>
+    <Copyright>Copyright 2021 Richard "TekuSP" Torhan</Copyright>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageProjectUrl>https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP</PackageProjectUrl>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Version>0.0.1</Version>
+    <InformationalVersion>0.0.1-Alpha</InformationalVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BarcodeLib" Version="2.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Rystem.Text.Base45" Version="1.0.3" />
+    <PackageReference Include="System.Formats.Cbor" Version="5.0.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.6" />
+  </ItemGroup>
+</Project>

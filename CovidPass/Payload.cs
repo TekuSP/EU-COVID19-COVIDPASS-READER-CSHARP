@@ -43,6 +43,12 @@ namespace CovidPassTestReader.CovidPass
 
             var keyValuePairs = Tools.ReadDict(MainData);
             DecodedData = ((ReadOnlyMemory<byte>)keyValuePairs[-260]).ToArray(); //260 is what we are looking for, main data
+            
+            DateTimeOffset dateTimeOffSet = DateTimeOffset.FromUnixTimeSeconds(long.Parse(keyValuePairs[(uint)6].ToString())); //Read validity
+            ValidFrom = dateTimeOffSet.DateTime;
+            DateTimeOffset dateTimeOffSet2 = DateTimeOffset.FromUnixTimeSeconds(long.Parse(keyValuePairs[(uint)4].ToString())); //Read validity
+            ValidTo = dateTimeOffSet2.DateTime;
+
             keyValuePairs = Tools.ReadDict(DecodedData);
             DecodedData = ((ReadOnlyMemory<byte>)keyValuePairs[(uint)1]).ToArray(); //1 is what we are looking for, sub main data in main data
 
@@ -67,5 +73,14 @@ namespace CovidPassTestReader.CovidPass
         /// Here are more decoded and parsed, but still raw data, this will be usually used
         /// </summary>
         public byte[] DecodedData { get; set; }
+        /// <summary>
+        /// Payload validity from
+        /// </summary>
+        public DateTime ValidFrom { get; set; }
+        /// <summary>
+        /// Payload validity to
+        /// </summary>
+        public DateTime ValidTo { get; set; }
+
     }
 }

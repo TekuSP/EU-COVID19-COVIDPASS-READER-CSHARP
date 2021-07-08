@@ -1,10 +1,15 @@
-﻿using System;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
+using System.Runtime.Serialization;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Information about used vaccine on user
     /// </summary>
+    [DataContract]
     public record VaccineInformation
     {
         /// <summary>
@@ -22,11 +27,11 @@ namespace CovidPassTestReader.CovidPass
         /// <summary>
         /// disease or agent targeted
         /// </summary>
-        public string AgentTargeted { get; set; }
+        public Json.ValueSetValue AgentTargeted { get; set; }
         /// <summary>
         /// vaccine or prophylaxis
         /// </summary>
-        public string Vaccine { get; set; }
+        public Json.ValueSetValue VaccineProphylaxis { get; set; }
         /// <summary>
         /// ISO8601 complete date: Date of Vaccination
         /// </summary>
@@ -34,7 +39,7 @@ namespace CovidPassTestReader.CovidPass
         /// <summary>
         /// Country of Vaccination
         /// </summary>
-        public Json.ValueSetValue CountryCode { get; set; }
+        public Json.ValueSetValue CountryOfTest { get; set; }
         /// <summary>
         /// vaccine medicinal product
         /// </summary>

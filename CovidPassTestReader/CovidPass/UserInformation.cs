@@ -1,10 +1,15 @@
-﻿using System;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
+using System.Runtime.Serialization;
 
-namespace CovidPassTestReader.CovidPass
+namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Informations about user
     /// </summary>
+    [DataContract]
     public record UserInformation
     {
         /// <summary>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AgentTargeted>
+    <Active>true</Active>
+    <Display>COVID-19</Display>
+    <Lang>en</Lang>
+    <Version>http://snomed.info/sct/900000000000207008/version/20210131</Version>
+  </AgentTargeted>
+  <TestType>
+    <Active>true</Active>
+    <Display>Rapid immunoassay</Display>
+    <Lang>en</Lang>
+    <Version>2.69</Version>
+  </TestType>
+  <Manufacturer>
+    <Active>true</Active>
+    <Display>Unknown manufacturer - ID 10</Display>
+    <Lang>en</Lang>
+  </Manufacturer>
+  <DateOfCollection>2021-06-02T20:31:00+02:00</DateOfCollection>
+  <TestResult>
+    <Active>true</Active>
+    <Display>Not detected</Display>
+    <Lang>en</Lang>
+    <Version>http://snomed.info/sct/900000000000207008/version/20210131</Version>
+  </TestResult>
+  <TestingCenter>ÚZIS - Ústav zdravotnických informací a statistiky</TestingCenter>
+  <CountryOfTest>
+    <Active>true</Active>
+    <Display>Czechia</Display>
+    <Lang>en</Lang>
+    <Version />
+  </CountryOfTest>
+  <CertificationIssuer>Ministry of Health of the Czech Republic</CertificationIssuer>
+  <UVCI>kppzq25u4tth3n76v7bgmjxtfh8795uc</UVCI>
+</TestInformation>

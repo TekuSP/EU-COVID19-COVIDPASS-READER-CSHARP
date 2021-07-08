@@ -1,10 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <PublisherName>Richard "TekuSP" Torhan</PublisherName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <PackageLicenseFile>README.md</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP</RepositoryUrl>
     <Authors>Richard "TekuSP" Torhan</Authors>
@@ -26,16 +30,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath=""/>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BarcodeLib" Version="2.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Rystem.Text.Base45" Version="1.0.3" />
     <PackageReference Include="System.Formats.Cbor" Version="5.0.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.6" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="TestData\covidTest.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 </Project>

@@ -34,7 +34,7 @@ namespace CovidPassReader.CovidPass
         /// <summary>
         /// Country of Vaccination
         /// </summary>
-        public Json.ValueSetValue CountryCode { get; set; }
+        public Json.ValueSetValue CountryOfTest { get; set; }
         /// <summary>
         /// vaccine medicinal product
         /// </summary>

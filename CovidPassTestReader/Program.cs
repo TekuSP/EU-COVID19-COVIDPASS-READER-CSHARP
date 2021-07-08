@@ -26,7 +26,7 @@ namespace CovidPassReader
             Console.WriteLine($"Dose / Total Doses: {passData.VaccineInformation.DoseNumber} / {passData.VaccineInformation.TotalDoses}");
             Console.WriteLine($"User did all doses? {passData.VaccineInformation.AllDosesDone}");
             Console.WriteLine($"Vaccine used: {passData.VaccineInformation.VaccineName.Display} from {passData.VaccineInformation.Manufacturer.Display}");
-            Console.WriteLine($"Certified by: {passData.VaccineInformation.CertificationIssuer} in Country: {passData.VaccineInformation.CountryCode.Display}");
+            Console.WriteLine($"Certified by: {passData.VaccineInformation.CertificationIssuer} in Country: {passData.VaccineInformation.CountryOfTest.Display}");
         }
     }
 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Formats.Cbor;
 using System.IO;
 using System.IO.Compression;
@@ -21,7 +22,7 @@ namespace CovidPassReader.CovidPass
         /// <summary>
         /// Is it vaccination proof, or test proof, or recovery proof?
         /// </summary>
-        public string PassportType { get; set; }
+        public CovidPassType PassportType { get; set; }
         /// <summary>
         /// Passport description, right now based on EU recommendation text
         /// </summary>
@@ -39,9 +40,9 @@ This certificate was verified/generated using third party application.
 Relevant information to software can be found here:
 https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
         /// <summary>
-        /// Is certificate valid by date?
+        /// Is certificate currently valid?
         /// </summary>
-        public bool IsValid => DateTime.Now < Payload.ValidTo && DateTime.Now > Payload.ValidFrom;
+        public bool IsValid => DateTime.Now < Payload.ValidTo && DateTime.Now > Payload.ValidFrom && (PassportType != CovidPassType.RecoveryProof || RecoveryInformation.IsValid);
         /// <summary>
         /// Data Payload we are basing on (Usually from QR code)
         /// </summary>
@@ -58,8 +59,14 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
         /// Information about vaccine
         /// </summary>
         public VaccineInformation VaccineInformation { get; set; }
-        //TODO: ADD TEST INFORMATION DATA
-
+        /// <summary>
+        /// Information about test
+        /// </summary>
+        public TestInformation TestInformation { get; set; }
+        /// <summary>
+        /// Information about recovery
+        /// </summary>
+        public RecoveryInformation RecoveryInformation { get; set; }
         /// <summary>
         /// Constructs Certification data based on Covid Pass data
         /// </summary>
@@ -110,28 +117,56 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
             Dictionary<object, object> testInformation = null;
             Dictionary<object, object> recoveryInformation = null;
 
+            PassportType = CovidPassType.Unknown;
 
             if (dict.ContainsKey("v")) //Are there any vaccines? There can be only one.
+            {
                 vaccinationInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["v"]);
+                PassportType = CovidPassType.Vaccine;
+            }
 
             if (dict.ContainsKey("t")) //Are there any tests? There can be only one.
+            {
                 testInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["t"]);
+                PassportType = CovidPassType.TestProof;
+            }
 
             if (dict.ContainsKey("r")) //Are there any recoveries? There can be only one.
+            {
                 recoveryInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["r"]);
+                PassportType = CovidPassType.RecoveryProof;
+            }
 
             var nameInformation = Tools.ReadDict((ReadOnlyMemory<byte>)dict["nam"]); //If we don't have name, then its rightful to crash
             var dateOfBirthInformation = DateTime.Parse(dict["dob"].ToString()); //Same here
 
             UserInformation = new UserInformation() { DateOfBirth = dateOfBirthInformation, Name = nameInformation["gn"].ToString(), StandardisedName = nameInformation["gnt"].ToString(), Surname = nameInformation["fn"].ToString(), StandardisedSurname = nameInformation["fnt"].ToString() }; //Init user information
-            if (vaccinationInformation != null)
+            switch (PassportType)
             {
-                VaccineInformation = new VaccineInformation() { CertificationIssuer = vaccinationInformation["is"].ToString(), DateOfVaccination = DateTime.Parse(vaccinationInformation["dt"].ToString()), DoseNumber = vaccinationInformation["dn"].ToString(), TotalDoses = vaccinationInformation["sd"].ToString(), UVCI = vaccinationInformation["ci"].ToString() }; //Init vaccine information
-                VaccineInformation.CountryCode = DataValueSets.CountryCodes.ValueSetValues[vaccinationInformation["co"].ToString()]; //Init Country
-                VaccineInformation.Manufacturer = DataValueSets.ManufacturersVaccines.ValueSetValues[vaccinationInformation["ma"].ToString()]; //Init Manufacturer
-                VaccineInformation.VaccineName = DataValueSets.VaccineMedicalProducts.ValueSetValues[vaccinationInformation["mp"].ToString()]; //Init Vaccine Name
-                VaccineInformation.VaccineProphylaxis = DataValueSets.VaccineProphylaxis.ValueSetValues[vaccinationInformation["vp"].ToString()];
-                VaccineInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[vaccinationInformation["tg"].ToString()];
+                case CovidPassType.Unknown:
+                    Trace.TraceWarning("Unknown test type?!");
+                    break;
+                case CovidPassType.Vaccine:
+                    VaccineInformation = new VaccineInformation() { CertificationIssuer = vaccinationInformation["is"].ToString(), DateOfVaccination = DateTime.Parse(vaccinationInformation["dt"].ToString()), DoseNumber = vaccinationInformation["dn"].ToString(), TotalDoses = vaccinationInformation["sd"].ToString(), UVCI = vaccinationInformation["ci"].ToString() }; //Init vaccine information
+                    VaccineInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[vaccinationInformation["co"].ToString()]; //Init Country
+                    VaccineInformation.Manufacturer = DataValueSets.ManufacturersVaccines.ValueSetValues[vaccinationInformation["ma"].ToString()]; //Init Manufacturer
+                    VaccineInformation.VaccineName = DataValueSets.VaccineMedicalProducts.ValueSetValues[vaccinationInformation["mp"].ToString()]; //Init Vaccine Name
+                    VaccineInformation.VaccineProphylaxis = DataValueSets.VaccineProphylaxis.ValueSetValues[vaccinationInformation["vp"].ToString()]; //Init prophylaxis
+                    VaccineInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[vaccinationInformation["tg"].ToString()]; //Init agents targeted
+                    break;
+                case CovidPassType.TestProof:
+                    TestInformation = new TestInformation() { CertificationIssuer = testInformation["is"].ToString(), DateOfCollection = DateTime.Parse(testInformation["sc"].ToString()), NAATestName = testInformation.ContainsKey("nm") ? testInformation["nm"].ToString() : null, TestingCenter = testInformation["tc"].ToString(), UVCI = testInformation["ci"].ToString() }; //Init test information
+                    TestInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[testInformation["co"].ToString()]; //Init Country
+                    TestInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[testInformation["tg"].ToString()]; //Init agents targeted
+                    TestInformation.TestType = DataValueSets.TestTypes.ValueSetValues[testInformation["tt"].ToString()]; //Init test type
+                    TestInformation.TestResult = DataValueSets.TestResults.ValueSetValues[testInformation["tr"].ToString()]; //Init test result
+                    TestInformation.Manufacturer = (testInformation.ContainsKey("ma") && DataValueSets.ManufacturersTests.ValueSetValues.ContainsKey(testInformation["ma"].ToString())) ? DataValueSets.ManufacturersTests.ValueSetValues[testInformation["ma"].ToString()] : new Json.ValueSetValue() { Active = true, Display = $"Unknown manufacturer - ID {(testInformation.ContainsKey("ma") ? testInformation["ma"].ToString() : "Not filled")}", Lang = "en", System = null, Version = null }; //Init Manufacturer
+                    break;
+                case CovidPassType.RecoveryProof:
+                    RecoveryInformation = new RecoveryInformation() { CertificationIssuer = recoveryInformation["is"].ToString(), FirstPositiveDate = DateTime.Parse(recoveryInformation["fr"].ToString()), ValidFrom = DateTime.Parse(recoveryInformation["df"].ToString()), ValidUntil = DateTime.Parse(recoveryInformation["du"].ToString()), UVCI = recoveryInformation["ci"].ToString() }; //Init recovery information
+                    RecoveryInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[recoveryInformation["co"].ToString()]; //Init Country
+                    RecoveryInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[recoveryInformation["tg"].ToString()]; //Init agents targeted
+                    break;
             }
         }
     }

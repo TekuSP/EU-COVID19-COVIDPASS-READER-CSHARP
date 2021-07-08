@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
 
 namespace CovidPassReader.CovidPass
 {

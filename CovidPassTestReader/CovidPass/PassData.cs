@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
@@ -18,55 +21,8 @@ namespace CovidPassReader.CovidPass
     /// </summary>
     public class PassData
     {
-        //Based on schema: https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/DCC.combined-schema.json
-        /// <summary>
-        /// Is it vaccination proof, or test proof, or recovery proof?
-        /// </summary>
-        public CovidPassType PassportType { get; set; }
-        /// <summary>
-        /// Passport description, right now based on EU recommendation text
-        /// </summary>
-        public string PassportDescription { get; set; } =
-@"This certificate is not a travel document. The scientific evidence
-on COVID-19 vaccination, testing and recovery continues to
-evolve, also in view of new variants of concern of the virus.
-Before traveling, please check the applicable public health
-measures and related restrictions applied at the point of
-destination.
-Relevant information can be found here:
-https://reopen.europa.eu/en
+        #region Public Constructors
 
-This certificate was verified/generated using third party application.
-Relevant information to software can be found here:
-https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
-        /// <summary>
-        /// Is certificate currently valid?
-        /// </summary>
-        public bool IsValid => DateTime.Now < Payload.ValidTo && DateTime.Now > Payload.ValidFrom && (PassportType != CovidPassType.RecoveryProof || RecoveryInformation.IsValid);
-        /// <summary>
-        /// Data Payload we are basing on (Usually from QR code)
-        /// </summary>
-        public Payload Payload { get; set; }
-        /// <summary>
-        /// Database data from EU
-        /// </summary>
-        public OnlineDataValueSets DataValueSets { get; set; }
-        /// <summary>
-        /// Information about user
-        /// </summary>
-        public UserInformation UserInformation { get; set; }
-        /// <summary>
-        /// Information about vaccine
-        /// </summary>
-        public VaccineInformation VaccineInformation { get; set; }
-        /// <summary>
-        /// Information about test
-        /// </summary>
-        public TestInformation TestInformation { get; set; }
-        /// <summary>
-        /// Information about recovery
-        /// </summary>
-        public RecoveryInformation RecoveryInformation { get; set; }
         /// <summary>
         /// Constructs Certification data based on Covid Pass data
         /// </summary>
@@ -80,7 +36,6 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
                 data = data.Substring(3); //Remove HC1
                 if (data.StartsWith(':'))
                     data = data.Substring(1); //Remove : if present
-
             }
             else
             {
@@ -146,6 +101,7 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
                 case CovidPassType.Unknown:
                     Trace.TraceWarning("Unknown test type?!");
                     break;
+
                 case CovidPassType.Vaccine:
                     VaccineInformation = new VaccineInformation() { CertificationIssuer = vaccinationInformation["is"].ToString(), DateOfVaccination = DateTime.Parse(vaccinationInformation["dt"].ToString()), DoseNumber = vaccinationInformation["dn"].ToString(), TotalDoses = vaccinationInformation["sd"].ToString(), UVCI = vaccinationInformation["ci"].ToString() }; //Init vaccine information
                     VaccineInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[vaccinationInformation["co"].ToString()]; //Init Country
@@ -154,6 +110,7 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
                     VaccineInformation.VaccineProphylaxis = DataValueSets.VaccineProphylaxis.ValueSetValues[vaccinationInformation["vp"].ToString()]; //Init prophylaxis
                     VaccineInformation.AgentTargeted = DataValueSets.AgentsTargeted.ValueSetValues[vaccinationInformation["tg"].ToString()]; //Init agents targeted
                     break;
+
                 case CovidPassType.TestProof:
                     TestInformation = new TestInformation() { CertificationIssuer = testInformation["is"].ToString(), DateOfCollection = DateTime.Parse(testInformation["sc"].ToString()), NAATestName = testInformation.ContainsKey("nm") ? testInformation["nm"].ToString() : null, TestingCenter = testInformation["tc"].ToString(), UVCI = testInformation["ci"].ToString() }; //Init test information
                     TestInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[testInformation["co"].ToString()]; //Init Country
@@ -162,6 +119,7 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
                     TestInformation.TestResult = DataValueSets.TestResults.ValueSetValues[testInformation["tr"].ToString()]; //Init test result
                     TestInformation.Manufacturer = (testInformation.ContainsKey("ma") && DataValueSets.ManufacturersTests.ValueSetValues.ContainsKey(testInformation["ma"].ToString())) ? DataValueSets.ManufacturersTests.ValueSetValues[testInformation["ma"].ToString()] : new Json.ValueSetValue() { Active = true, Display = $"Unknown manufacturer - ID {(testInformation.ContainsKey("ma") ? testInformation["ma"].ToString() : "Not filled")}", Lang = "en", System = null, Version = null }; //Init Manufacturer
                     break;
+
                 case CovidPassType.RecoveryProof:
                     RecoveryInformation = new RecoveryInformation() { CertificationIssuer = recoveryInformation["is"].ToString(), FirstPositiveDate = DateTime.Parse(recoveryInformation["fr"].ToString()), ValidFrom = DateTime.Parse(recoveryInformation["df"].ToString()), ValidUntil = DateTime.Parse(recoveryInformation["du"].ToString()), UVCI = recoveryInformation["ci"].ToString() }; //Init recovery information
                     RecoveryInformation.CountryOfTest = DataValueSets.CountryCodes.ValueSetValues[recoveryInformation["co"].ToString()]; //Init Country
@@ -169,5 +127,69 @@ https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
                     break;
             }
         }
+
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        /// <summary>
+        /// Database data from EU
+        /// </summary>
+        public OnlineDataValueSets DataValueSets { get; set; }
+
+        /// <summary>
+        /// Is certificate currently valid?
+        /// </summary>
+        public bool IsValid => DateTime.Now < Payload.ValidTo && DateTime.Now > Payload.ValidFrom && (PassportType != CovidPassType.RecoveryProof || RecoveryInformation.IsValid);
+
+        /// <summary>
+        /// Passport description, right now based on EU recommendation text
+        /// </summary>
+        public string PassportDescription { get; set; } =
+@"This certificate is not a travel document. The scientific evidence
+on COVID-19 vaccination, testing and recovery continues to
+evolve, also in view of new variants of concern of the virus.
+Before traveling, please check the applicable public health
+measures and related restrictions applied at the point of
+destination.
+Relevant information can be found here:
+https://reopen.europa.eu/en
+
+This certificate was verified/generated using third party application.
+Relevant information to software can be found here:
+https://github.com/TekuSP/EU-COVID19-COVIDPASS-READER-CSHARP";
+
+        //Based on schema: https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/release/1.3.0/DCC.combined-schema.json
+        /// <summary>
+        /// Is it vaccination proof, or test proof, or recovery proof?
+        /// </summary>
+        public CovidPassType PassportType { get; set; }
+
+        /// <summary>
+        /// Data Payload we are basing on (Usually from QR code)
+        /// </summary>
+        public Payload Payload { get; set; }
+
+        /// <summary>
+        /// Information about recovery
+        /// </summary>
+        public RecoveryInformation RecoveryInformation { get; set; }
+
+        /// <summary>
+        /// Information about test
+        /// </summary>
+        public TestInformation TestInformation { get; set; }
+
+        /// <summary>
+        /// Information about user
+        /// </summary>
+        public UserInformation UserInformation { get; set; }
+
+        /// <summary>
+        /// Information about vaccine
+        /// </summary>
+        public VaccineInformation VaccineInformation { get; set; }
+
+        #endregion Public Properties
     }
 }

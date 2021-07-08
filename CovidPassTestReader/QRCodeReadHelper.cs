@@ -1,10 +1,10 @@
-﻿using System;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using ZXing;
 using ZXing.Common;
@@ -13,6 +13,8 @@ namespace CovidPassReader
 {
     public static class QRCodeReadHelper
     {
+        #region Public Methods
+
         /// <summary>
         /// Reads QR Code from an image
         /// </summary>
@@ -22,6 +24,7 @@ namespace CovidPassReader
         {
             return ReadQRCode((Image)new Bitmap(path));
         }
+
         /// <summary>
         /// Reads QR Code from an image
         /// </summary>
@@ -58,5 +61,7 @@ namespace CovidPassReader
                 return null;
             }
         }
+
+        #endregion Public Methods
     }
 }

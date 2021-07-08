@@ -1,9 +1,9 @@
-﻿using System;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
 using System.Collections.Generic;
 using System.Formats.Cbor;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CovidPassReader.CovidPass
 {
@@ -12,6 +12,8 @@ namespace CovidPassReader.CovidPass
     /// </summary>
     public static class Tools
     {
+        #region Public Methods
+
         /// <summary>
         /// CBOR IS EVIL. This helps mitigate that evil by reading dictionary from CBOR.
         /// </summary>
@@ -32,39 +34,19 @@ namespace CovidPassReader.CovidPass
             for (int i = 0; i < mapStart * 2; i++)
             {
                 object temp = null;
-                switch (test.PeekState())
+                temp = test.PeekState() switch
                 {
-                    case CborReaderState.UnsignedInteger:
-                        temp = test.ReadUInt32();
-                        break;
-                    case CborReaderState.NegativeInteger:
-                        temp = test.ReadInt32();
-                        break;
-                    case CborReaderState.ByteString:
-                        temp = test.ReadByteString();
-                        break;
-                    case CborReaderState.TextString:
-                        temp = test.ReadTextString();
-                        break;
-                    case CborReaderState.SimpleValue:
-                        temp = test.ReadSimpleValue();
-                        break;
-                    case CborReaderState.HalfPrecisionFloat:
-                        temp = test.ReadHalf();
-                        break;
-                    case CborReaderState.SinglePrecisionFloat:
-                        temp = test.ReadSingle();
-                        break;
-                    case CborReaderState.DoublePrecisionFloat:
-                        temp = test.ReadDouble();
-                        break;
-                    case CborReaderState.Boolean:
-                        temp = test.ReadBoolean();
-                        break;
-                    default:
-                        temp = test.ReadEncodedValue();
-                        break;
-                }
+                    CborReaderState.UnsignedInteger => test.ReadUInt32(),
+                    CborReaderState.NegativeInteger => test.ReadInt32(),
+                    CborReaderState.ByteString => test.ReadByteString(),
+                    CborReaderState.TextString => test.ReadTextString(),
+                    CborReaderState.SimpleValue => test.ReadSimpleValue(),
+                    CborReaderState.HalfPrecisionFloat => test.ReadHalf(),
+                    CborReaderState.SinglePrecisionFloat => test.ReadSingle(),
+                    CborReaderState.DoublePrecisionFloat => test.ReadDouble(),
+                    CborReaderState.Boolean => test.ReadBoolean(),
+                    _ => test.ReadEncodedValue(),
+                };
                 if (key == null)
                 {
                     key = temp;
@@ -80,5 +62,7 @@ namespace CovidPassReader.CovidPass
                 test.ReadEndArray();
             return keyValuePairs;
         }
+
+        #endregion Public Methods
     }
 }

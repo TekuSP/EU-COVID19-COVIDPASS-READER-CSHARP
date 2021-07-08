@@ -1,4 +1,7 @@
-﻿using System;
+﻿//Copyright 2021 Richard "TekuSP" Torhan
+//See LICENSE for License information
+//Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -18,11 +21,17 @@ namespace CovidPassReader
     [Serializable]
     public class GaussianBlur
     {
-        private int _radius = 6;
+        #region Private Fields
+
+        private BlurType _blurType;
         private int[] _kernel;
         private int _kernelSum;
         private int[,] _multable;
-        private BlurType _blurType;
+        private int _radius = 6;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public GaussianBlur()
         {
@@ -35,29 +44,36 @@ namespace CovidPassReader
             PreCalculateSomeStuff();
         }
 
-        private void PreCalculateSomeStuff()
+        #endregion Public Constructors
+
+        #region Public Properties
+
+        public BlurType BlurType
         {
-            int sz = _radius * 2 + 1;
-            _kernel = new int[sz];
-            _multable = new int[sz, 256];
-            for (int i = 1; i <= _radius; i++)
+            get { return _blurType; }
+            set
             {
-                int szi = _radius - i;
-                int szj = _radius + i;
-                _kernel[szj] = _kernel[szi] = (szi + 1) * (szi + 1);
-                _kernelSum += (_kernel[szj] + _kernel[szi]);
-                for (int j = 0; j < 256; j++)
-                {
-                    _multable[szj, j] = _multable[szi, j] = _kernel[szj] * j;
-                }
-            }
-            _kernel[_radius] = (_radius + 1) * (_radius + 1);
-            _kernelSum += _kernel[_radius];
-            for (int j = 0; j < 256; j++)
-            {
-                _multable[_radius, j] = _kernel[_radius] * j;
+                _blurType = value;
             }
         }
+
+        public int Radius
+        {
+            get { return _radius; }
+            set
+            {
+                if (value < 2)
+                {
+                    throw new InvalidOperationException("Radius must be greater then 1");
+                }
+                _radius = value;
+                PreCalculateSomeStuff();
+            }
+        }
+
+        #endregion Public Properties
+
+        #region Public Methods
 
         public Image ProcessImage(Image inputImage)
         {
@@ -193,34 +209,48 @@ namespace CovidPassReader
             return blurred;
         }
 
-        public int Radius
+        #endregion Public Methods
+
+        #region Private Methods
+
+        private void PreCalculateSomeStuff()
         {
-            get { return _radius; }
-            set
+            int sz = _radius * 2 + 1;
+            _kernel = new int[sz];
+            _multable = new int[sz, 256];
+            for (int i = 1; i <= _radius; i++)
             {
-                if (value < 2)
+                int szi = _radius - i;
+                int szj = _radius + i;
+                _kernel[szj] = _kernel[szi] = (szi + 1) * (szi + 1);
+                _kernelSum += (_kernel[szj] + _kernel[szi]);
+                for (int j = 0; j < 256; j++)
                 {
-                    throw new InvalidOperationException("Radius must be greater then 1");
+                    _multable[szj, j] = _multable[szi, j] = _kernel[szj] * j;
                 }
-                _radius = value;
-                PreCalculateSomeStuff();
+            }
+            _kernel[_radius] = (_radius + 1) * (_radius + 1);
+            _kernelSum += _kernel[_radius];
+            for (int j = 0; j < 256; j++)
+            {
+                _multable[_radius, j] = _kernel[_radius] * j;
             }
         }
 
-        public BlurType BlurType
-        {
-            get { return _blurType; }
-            set
-            {
-                _blurType = value;
-            }
-        }
+        #endregion Private Methods
     }
+
     public unsafe class RawBitmap : IDisposable
     {
-        private Bitmap _originBitmap;
-        private BitmapData _bitmapData;
+        #region Private Fields
+
         private byte* _begin;
+        private BitmapData _bitmapData;
+        private Bitmap _originBitmap;
+
+        #endregion Private Fields
+
+        #region Public Constructors
 
         public RawBitmap(Bitmap originBitmap)
         {
@@ -229,19 +259,42 @@ namespace CovidPassReader
             _begin = (byte*)(void*)_bitmapData.Scan0;
         }
 
-        #region IDisposable Members
+        #endregion Public Constructors
 
-        public void Dispose()
-        {
-            _originBitmap.UnlockBits(_bitmapData);
-        }
-
-        #endregion
+        #region Public Properties
 
         public unsafe byte* Begin
         {
             get { return _begin; }
         }
+
+        public int Height
+        {
+            get { return _bitmapData.Height; }
+        }
+
+        public Bitmap OriginBitmap
+        {
+            get { return _originBitmap; }
+        }
+
+        public int Stride
+        {
+            get { return _bitmapData.Stride; }
+        }
+
+        //public unsafe void SetColor(int x, int y, int color)
+        //{
+        //    *(int*)(_begin + y * (_bitmapData.Stride) + x * 3) = color;
+        //}
+        public int Width
+        {
+            get { return _bitmapData.Width; }
+        }
+
+        #endregion Public Properties
+
+        #region Public Indexers
 
         public unsafe byte* this[int x, int y]
         {
@@ -259,24 +312,14 @@ namespace CovidPassReader
             }
         }
 
-        //public unsafe void SetColor(int x, int y, int color)
-        //{
-        //    *(int*)(_begin + y * (_bitmapData.Stride) + x * 3) = color;
-        //}
+        #endregion Public Indexers
 
-        public int Stride
-        {
-            get { return _bitmapData.Stride; }
-        }
+        #region Public Methods
 
-        public int Width
+        public void Dispose()
         {
-            get { return _bitmapData.Width; }
-        }
-
-        public int Height
-        {
-            get { return _bitmapData.Height; }
+            _originBitmap.UnlockBits(_bitmapData);
+            GC.SuppressFinalize(this);
         }
 
         public int GetOffset()
@@ -284,9 +327,6 @@ namespace CovidPassReader
             return _bitmapData.Stride - _bitmapData.Width * 3;
         }
 
-        public Bitmap OriginBitmap
-        {
-            get { return _originBitmap; }
-        }
+        #endregion Public Methods
     }
 }

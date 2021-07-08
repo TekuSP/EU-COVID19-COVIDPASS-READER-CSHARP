@@ -7,10 +7,11 @@ using System.Text;
 using System.Drawing;
 using System.ComponentModel;
 using System.Drawing.Imaging;
+using System.Runtime.Serialization;
 
 namespace CovidPassReader
 {
-    [Serializable]
+    [DataContract]
     public enum BlurType
     {
         Both,
@@ -18,7 +19,7 @@ namespace CovidPassReader
         VerticalOnly,
     }
 
-    [Serializable]
+    [DataContract]
     public class GaussianBlur
     {
         #region Private Fields

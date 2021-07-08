@@ -2,12 +2,14 @@
 //See LICENSE for License information
 //Used license: Apache License, Version 2.0, January 2004, http://www.apache.org/licenses/
 using System;
+using System.Runtime.Serialization;
 
 namespace CovidPassReader.CovidPass
 {
     /// <summary>
     /// Information about used test on user
     /// </summary>
+    [DataContract]
     public record TestInformation
     {
         /// <summary>

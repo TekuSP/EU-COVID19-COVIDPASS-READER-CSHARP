@@ -10,6 +10,7 @@ using System.Formats.Cbor;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Unicode;
 using System.Threading.Tasks;
@@ -19,6 +20,7 @@ namespace CovidPassReader.CovidPass
     /// <summary>
     /// COVID-19 Certification data, containing vacinnes and tests done
     /// </summary>
+    [DataContract]
     public class PassData
     {
         #region Public Constructors

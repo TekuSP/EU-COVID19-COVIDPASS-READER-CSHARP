@@ -6,7 +6,10 @@ using Newtonsoft.Json.Converters;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace CovidPassReader.CovidPass.Json
 {
@@ -18,8 +21,8 @@ namespace CovidPassReader.CovidPass.Json
 
         #endregion Public Methods
     }
-
-    public partial class EUData
+    [DataContract]
+    public class EUData
     {
         #region Public Properties
 
@@ -45,8 +48,8 @@ namespace CovidPassReader.CovidPass.Json
 
         #endregion Public Methods
     }
-
-    public partial class ValueSetValue
+    [DataContract]
+    public class ValueSetValue
     {
         #region Public Properties
 
@@ -60,6 +63,7 @@ namespace CovidPassReader.CovidPass.Json
         public string Lang { get; set; }
 
         [JsonProperty("system")]
+        [XmlIgnore]
         public Uri System { get; set; }
 
         [JsonProperty("version")]

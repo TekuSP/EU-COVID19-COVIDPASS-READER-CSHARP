@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VaccineInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DoseNumber>1</DoseNumber>
+  <TotalDoses>2</TotalDoses>
+  <AgentTargeted>
+    <Active>true</Active>
+    <Display>COVID-19</Display>
+    <Lang>en</Lang>
+    <Version>http://snomed.info/sct/900000000000207008/version/20210131</Version>
+  </AgentTargeted>
+  <VaccineProphylaxis>
+    <Active>true</Active>
+    <Display>SARS-CoV-2 mRNA vaccine</Display>
+    <Lang>en</Lang>
+    <Version>http://snomed.info/sct/900000000000207008/version/20210131</Version>
+  </VaccineProphylaxis>
+  <DateOfVaccination>2021-05-25T00:00:00</DateOfVaccination>
+  <CountryOfTest>
+    <Active>true</Active>
+    <Display>Czechia</Display>
+    <Lang>en</Lang>
+    <Version />
+  </CountryOfTest>
+  <VaccineName>
+    <Active>true</Active>
+    <Display>Comirnaty</Display>
+    <Lang>en</Lang>
+    <Version />
+  </VaccineName>
+  <Manufacturer>
+    <Active>true</Active>
+    <Display>Biontech Manufacturing GmbH</Display>
+    <Lang>en</Lang>
+    <Version />
+  </Manufacturer>
+  <CertificationIssuer>Ministry of Health of the Czech Republic</CertificationIssuer>
+  <UVCI>3kaxnrcb3pt5ppxjb342uu8zpj3cn4fg</UVCI>
+</VaccineInformation>

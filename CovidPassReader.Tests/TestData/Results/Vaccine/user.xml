@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>František</Name>
+  <StandardisedName>FRANTISEK</StandardisedName>
+  <Surname>První</Surname>
+  <StandardisedSurname>PRVNI</StandardisedSurname>
+  <DateOfBirth>1990-01-01T00:00:00</DateOfBirth>
+</UserInformation>

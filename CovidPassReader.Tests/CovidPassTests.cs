@@ -51,7 +51,17 @@ namespace CovidPassReader.Tests
             fs.Close();
 
             Assert.AreEqual(mockUser, testData.UserInformation, "User data loaded incorrectly from QR code!");
-            //Assert.AreEqual(mockVaccine, testData.VaccineInformation, "User data, vaccine, loaded incorrectly from QR code!"); TODO: FIX MOCK
+            //Test vaccine information
+            Assert.AreEqual(mockVaccine.AgentTargeted.Display, testData.VaccineInformation.AgentTargeted.Display, "AgentTargeted are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.CertificationIssuer, testData.VaccineInformation.CertificationIssuer, "CertificationIssuer are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.CountryOfTest.Display, testData.VaccineInformation.CountryOfTest.Display, "CountryOfTest are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.DateOfVaccination, testData.VaccineInformation.DateOfVaccination, "DateOfVaccination are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.DoseNumber, testData.VaccineInformation.DoseNumber, "DoseNumber are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.Manufacturer.Display, testData.VaccineInformation.Manufacturer.Display, "Manufacturer are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.TotalDoses, testData.VaccineInformation.TotalDoses, "TotalDoses are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.UVCI, testData.VaccineInformation.UVCI, "UVCI are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.VaccineName.Display, testData.VaccineInformation.VaccineName.Display, "VaccineName are different! Vaccine data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockVaccine.VaccineProphylaxis.Display, testData.VaccineInformation.VaccineProphylaxis.Display, "VaccineProphylaxis are different! Vaccine data loaded incorrectly from QR code!");
         }
 
         [TestMethod]
@@ -74,7 +84,17 @@ namespace CovidPassReader.Tests
             fs.Close();
 
             Assert.AreEqual(mockUser, testData.UserInformation, "User data loaded incorrectly from QR code!");
-            //Assert.AreEqual(mockTest, testData.TestInformation, "User data, test, loaded incorrectly from QR code!"); TODO: FIX MOCK
+            //Test test information
+            Assert.AreEqual(mockTest.AgentTargeted.Display, testData.TestInformation.AgentTargeted.Display, "AgentTargeted are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.CertificationIssuer, testData.TestInformation.CertificationIssuer, "CertificationIssuer are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.CountryOfTest.Display, testData.TestInformation.CountryOfTest.Display, "CountryOfTest are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.DateOfCollection, testData.TestInformation.DateOfCollection, "DateOfCollection are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.NAATestName, testData.TestInformation.NAATestName, "NAATestName are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.Manufacturer.Display, testData.TestInformation.Manufacturer.Display, "Manufacturer are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.TestingCenter, testData.TestInformation.TestingCenter, "TestingCenter are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.UVCI, testData.TestInformation.UVCI, "UVCI are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.TestResult.Display, testData.TestInformation.TestResult.Display, "TestResult are different! Test data loaded incorrectly from QR code!");
+            Assert.AreEqual(mockTest.TestType.Display, testData.TestInformation.TestType.Display, "TestType are different! Test data loaded incorrectly from QR code!");
         }
 
         #endregion Public Methods

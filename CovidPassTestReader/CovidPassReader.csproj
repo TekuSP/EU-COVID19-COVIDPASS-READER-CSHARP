@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
     <PublisherName>Richard "TekuSP" Torhan</PublisherName>
@@ -32,13 +32,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath=""/>
+    <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BarcodeLib" Version="2.4.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Rystem.Text.Base45" Version="1.0.3" />
-    <PackageReference Include="System.Formats.Cbor" Version="5.0.0" />
-    <PackageReference Include="ZXing.Net" Version="0.16.6" />
+    <PackageReference Include="System.Formats.Cbor" Version="7.0.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
   </ItemGroup>
 </Project>

@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 
 using ZXing;
 using ZXing.Common;
+using ZXing.Windows.Compatibility;
 
 namespace CovidPassReader
 {
@@ -34,22 +36,22 @@ namespace CovidPassReader
         {
             try
             {
+                var gFilter = new GaussianBlur(1);
+                var processedImage = gFilter.ProcessImage(image);
                 BarcodeReader reader = new BarcodeReader(null, null, ls => new GlobalHistogramBinarizer(ls))
                 {
-                    AutoRotate = true
+                    AutoRotate = true,
                 };
                 reader.Options.TryHarder = true;
                 reader.Options.PureBarcode = false;
                 reader.AutoRotate = true;
-                reader.TryInverted = true;
+                reader.Options.TryInverted = true;
                 reader.Options.PossibleFormats = new List<BarcodeFormat>
                 {
                     BarcodeFormat.QR_CODE
                 };
-                var gFilter = new GaussianBlur(1);
-                var processedImage = gFilter.ProcessImage(image);
 
-                var result = reader.Decode((Bitmap)processedImage);
+                var result = reader.Decode((Bitmap)image);
                 if (result == null)
                     return null; //Nothing read
                 return result.Text; //Correct QR code

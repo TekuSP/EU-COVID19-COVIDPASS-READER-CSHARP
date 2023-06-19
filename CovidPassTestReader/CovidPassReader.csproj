@@ -35,7 +35,7 @@
     <None Include="..\LICENSE" Link="LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="BarcodeLib" Version="2.4.0" />
+    <PackageReference Include="BarcodeLib" Version="3.0.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Rystem.Text.Base45" Version="1.0.3" />

@@ -39,7 +39,7 @@
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="7.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Rystem.Text.Base45" Version="1.0.3" />
-    <PackageReference Include="System.Formats.Cbor" Version="7.0.0" />
+    <PackageReference Include="System.Formats.Cbor" Version="8.0.0" />
     <PackageReference Include="ZXing.Net" Version="0.16.9" />
     <PackageReference Include="ZXing.Net.Bindings.Windows.Compatibility" Version="0.16.12" />
   </ItemGroup>
